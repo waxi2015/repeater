@@ -1,0 +1,26 @@
+<? if ($this->getPaginator()->getMode() == 'ajax' && $this->getInit()): ?>
+	<script>
+		$(function(){
+			$('#<?=$this->getId()?>').waxrepeater({page:<?=$this->getPage()?>, descriptor:'<?=encode(serialize($this->getDescriptor()))?>'});
+		})
+	</script>
+<? endif; ?>
+
+<? if ($this->getPaginator()->getType() == 'more' && $this->getPaginator()->getAutoload()): ?>
+	<script>
+		$(function(){
+			$(window).unbind('scroll').bind('scroll',function(e){
+				var repeater = $('#<?=$this->getId()?>'),
+					offset = repeater.offset(),
+					height = repeater.height(),
+					top = offset.top,
+					windowHeight = $(window).height(),
+					windowTop = $(window).scrollTop();
+
+				if (windowTop + windowHeight >= top + height) {
+					repeater.find('.wax-repeater-more').click();
+				}
+			});
+		})
+	</script>
+<? endif; ?>

@@ -1,0 +1,9 @@
+<th<?=$this->getClassString()?><?=$this->getWidthString()?><?=$this->getAlignString()?><?=$this->getStyleString()?>>
+	<? if ($this->getOrderDisabled()): ?>
+		<?=$this->getLabel()?>
+	<? else: ?>
+		<a href="" class="wax-repeater-change-order" <?=$this->getOrderDomDataString()?>>
+			<?=$this->getLabel()?> <?=$this->getOrderSign()?>
+		</a>
+	<? endif; ?>
+</th>

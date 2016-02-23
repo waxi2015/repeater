@@ -1,0 +1,13 @@
+<div class="wax-paginator-pages">
+	<? foreach ($this->getPages() as $page): ?>
+		<? if ($page['current']): ?>
+			<a href="<?=$this->getPageBaseUrl()?>/<?=$page['page']?>" class="wax-repeater-page" data-page="<?=$page['page']?>"><b><?=$page['page']?></b></a>
+		<? else: ?>
+			<a href="<?=$this->getPageBaseUrl()?>/<?=$page['page']?>" class="wax-repeater-page" data-page="<?=$page['page']?>"><?=$page['page']?></a>
+		<? endif; ?>
+		 &nbsp;&nbsp;
+	<? endforeach; ?>
+</div>
+<!--<br> Current page: <?=$this->getPage()?>
+<br> Total pages: <?=$this->getTotalPages()?>
+<br> Total results: <?=$this->getTotal()?>-->

@@ -1,0 +1,9 @@
+<div id="<?=$this->getId()?>" class="wax-repeater" data-descriptor="<?=$this->getId()?>" data-page="<?=$this->getPage()?>" data-type="<?=$this->getPaginatorType()?>">
+	
+	<? foreach ($this->getRows() as $one): ?>
+		<div class="one"><b><?=$one->getId()?></b><br /></div>
+	<? endforeach; ?>
+	<?=$this->getPaginator()->render()?>
+
+</div>
+
