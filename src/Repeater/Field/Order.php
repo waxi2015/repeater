@@ -1,6 +1,6 @@
 <?php
 
-namespace Wax\Repeater\Repeater\Field;
+namespace Waxis\Repeater\Repeater\Field;
 
 class Order extends Td {
 

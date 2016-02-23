@@ -1,6 +1,6 @@
 <?php
 
-namespace Wax\Lister\Lister;
+namespace Waxis\Lister\Lister;
 
 class Ancestor {
 

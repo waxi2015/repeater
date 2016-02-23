@@ -1,6 +1,6 @@
 <?php
 
-Route::post('/wax/repeater', 'Wax\Lister\Controllers\ListerController@list');
-Route::post('/wax/repeater/more', 'Wax\Lister\Controllers\ListerController@more');
-Route::post('/wax/repeater/delete', 'Wax\Lister\Controllers\ListerController@delete');
-Route::post('/wax/repeater/changeorder', 'Wax\Lister\Controllers\ListerController@changeorder');
+Route::post('/wax/repeater', 'Waxis\Lister\Controllers\ListerController@list');
+Route::post('/wax/repeater/more', 'Waxis\Lister\Controllers\ListerController@more');
+Route::post('/wax/repeater/delete', 'Waxis\Lister\Controllers\ListerController@delete');
+Route::post('/wax/repeater/changeorder', 'Waxis\Lister\Controllers\ListerController@changeorder');

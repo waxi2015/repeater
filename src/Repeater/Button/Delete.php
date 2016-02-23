@@ -1,6 +1,6 @@
 <?php
 
-namespace Wax\Repeater\Repeater\Button;
+namespace Waxis\Repeater\Repeater\Button;
 
 class Delete extends Ancestor {
 

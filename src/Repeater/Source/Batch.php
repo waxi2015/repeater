@@ -1,6 +1,6 @@
 <?php
 
-namespace Wax\Repeater\Repeater\Source;
+namespace Waxis\Repeater\Repeater\Source;
 
 class Batch extends Ancestor {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wax\Repeater;
+namespace Waxis\Repeater;
 
 class Repeater extends Repeater\Ancestor {
 

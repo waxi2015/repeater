@@ -1,6 +1,6 @@
 <?php
 
-namespace Wax\Repeater\Repeater\Paginator;
+namespace Waxis\Repeater\Repeater\Paginator;
 
 class More extends Ancestor {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wax\Repeater\Controllers;
+namespace Waxis\Repeater\Controllers;
 
 use Illuminate\Http\Request;
 
@@ -21,7 +21,7 @@ class RepeaterController extends Controller
 			return false;
 		}
 
-		$field = new \Wax\Repeater\Repeater\Field\Order($repeater->getFieldByType('order'));
+		$field = new \Waxis\Repeater\Repeater\Field\Order($repeater->getFieldByType('order'));
 
 		$table = $repeater->getTable();
 
@@ -62,7 +62,7 @@ class RepeaterController extends Controller
 
 		$orderField = $repeater->getFieldByType('order');
 		if ($orderField) {
-			$orderField = new \Wax\Repeater\Repeater\Field\Order($orderField);
+			$orderField = new \Waxis\Repeater\Repeater\Field\Order($orderField);
 			$descriptor = array(
 				$table => array(
 					'table' => $table,

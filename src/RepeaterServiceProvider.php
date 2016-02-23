@@ -1,6 +1,6 @@
 <?php
 
-namespace Wax\Repeater;
+namespace Waxis\Repeater;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Wax\Repeater\Repeater\Field;
+namespace Waxis\Repeater\Repeater\Field;
 
-class Ancestor extends \Wax\Repeater\Repeater\Ancestor {
+class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public $type = 'field';
 

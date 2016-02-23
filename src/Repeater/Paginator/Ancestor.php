@@ -1,8 +1,8 @@
 <?php
 
-namespace Wax\Repeater\Repeater\Paginator;
+namespace Waxis\Repeater\Repeater\Paginator;
 
-class Ancestor extends \Wax\Repeater\Repeater\Ancestor {
+class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public $type = 'paginator';
 

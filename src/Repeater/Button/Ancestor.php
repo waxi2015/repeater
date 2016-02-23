@@ -1,8 +1,8 @@
 <?php
 
-namespace Wax\Repeater\Repeater\Button;
+namespace Waxis\Repeater\Repeater\Button;
 
-class Ancestor extends \Wax\Repeater\Repeater\Ancestor {
+class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public $type = 'button'; // also directory name
 
