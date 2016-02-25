@@ -1,0 +1,20 @@
+{
+    "name": "waxis/repeater",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wa Xi",
+            "email": "waxi2016@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.5.9",
+        "waxis/order": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Waxis\\Repeater\\": "src/"
+        }
+    }
+}

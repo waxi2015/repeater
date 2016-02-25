@@ -1,0 +1,27 @@
+<div id="<?=$this->getId()?>" class="wax-repeater" data-descriptor="<?=$this->getId()?>" data-type="<?=$this->getPaginatorType()?>">
+	<table class="wax-repeater-table<?=$this->getClass()?>" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<? foreach ($this->getLabels() as $label): ?>
+				<?=$label->renderLabel()?>
+			<? endforeach; ?>
+
+			<? if ($this->hasButtons()): ?>
+				<?=$this->getButtonsLabel()->renderLabel()?>
+			<? endif; ?>
+		</tr>
+		<? foreach ($this->getRows() as $index => $row): ?>
+			<tr>
+				<? foreach ($row as $field): ?>
+					<?=$field->render()?>
+				<? endforeach; ?>
+
+				<? if ($this->hasButtons()): ?>
+					<?=$this->getButtons($index)->render()?>
+				<? endif; ?>
+			</tr>
+		<? endforeach; ?>
+	</table>
+	<?=$this->getPaginator()->render()?>
+</div>
+
+<?=$this->renderJavascript('init.phtml')?>
