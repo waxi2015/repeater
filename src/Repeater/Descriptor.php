@@ -1,5 +1,5 @@
 <?php
 
-namespace Waxis\Lister\Lister;
+namespace Waxis\Repeater\Repeater;
 
 class Descriptor { }

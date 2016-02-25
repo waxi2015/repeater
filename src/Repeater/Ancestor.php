@@ -1,6 +1,6 @@
 <?php
 
-namespace Waxis\Lister\Lister;
+namespace Waxis\Repeater\Repeater;
 
 class Ancestor {
 
@@ -38,8 +38,8 @@ class Ancestor {
 
 	public function getConfig () {
 		if (!$this->config) {
-			if (file_exists(app_path() . '/Configs/Lister.php')) {
-				$config = new \App\Configs\Lister;
+			if (file_exists(app_path() . '/Configs/Repeater.php')) {
+				$config = new \App\Configs\Repeater;
 			} else {
 				$config = new Config;
 			}
@@ -107,10 +107,10 @@ class Ancestor {
 			}
 		} else {
 			# 4th - if it was not given, check out <app>/<type>/ first
-			$pathToTemplate = base_path() . '/resources/views/lister/' . $this->getType() . '/' . $template;
+			$pathToTemplate = base_path() . '/resources/views/repeater/' . $this->getType() . '/' . $template;
 			if (!file_exists($pathToTemplate)) {
 				# 5th - if it's not in <app>/<type>/ check out <app>/
-				$pathToTemplate = base_path() . '/resources/views/lister/' . $template;
+				$pathToTemplate = base_path() . '/resources/views/repeater/' . $template;
 			}
 
 			# 6th - if it was not in the app, check out <wx-list>/<type>/ first

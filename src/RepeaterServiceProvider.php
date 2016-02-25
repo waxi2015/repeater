@@ -15,8 +15,14 @@ class RepeaterServiceProvider extends ServiceProvider
     public function boot()
     {
         if (! $this->app->routesAreCached()) {
-            require __DIR__.'/../routes.php';
+            require __DIR__.'/routes.php';
         }
+
+        $this->publishes([
+            __DIR__.'/Repeater/Template/custom.phtml' => resource_path('views/repeater/custom.phtml'),
+            __DIR__.'/Descriptors/Example.php' => app_path('Descriptors/Repeater/Example.php'),
+            __DIR__.'/assets' => resource_path('assets/libs/repeater/'),
+        ]);
     }
 
     /**

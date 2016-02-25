@@ -1,6 +1,6 @@
 <?php
 
-namespace Waxis\Repeater\Controllers;
+namespace Waxis\Repeater;
 
 use Illuminate\Http\Request;
 
