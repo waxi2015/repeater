@@ -7,9 +7,10 @@
             "email": "waxi2016@gmail.com"
         }
     ],
+    "version":"1.0.0",
     "require": {
         "php": ">=5.5.9",
-        "waxis/order": "dev-master"
+        "waxis/order": "1.0.0"
     },
     "autoload": {
         "psr-4": {
