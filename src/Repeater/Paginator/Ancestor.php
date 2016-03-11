@@ -49,8 +49,66 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 		parent::__construct($descriptor);
 	}
 
+	public function getPageInfo () {
+		$from = ($this->page * $this->limit) - $this->limit + 1;
+		$to = $from + $this->limit - 1;
+		$total = $this->getTotal();
+
+		if ($to > $total) {
+			$to = $total;
+		}
+
+		return "Showing $from to $to of $total entries";
+	}
+
 	public function getPageBaseUrl () {
 		return preg_replace('/\/[0-9]*$/','',\Request::url());
+	}
+
+	public function getPageUrl($page)
+	{
+		return $this->getPageBaseUrl() . '/' . $page;
+	}
+
+	public function getPrevPageUrl()
+	{
+		return $this->getPageBaseUrl() . '/' . $this->getPrevPageNumber();
+	}
+
+	public function getNextPageUrl()
+	{
+		return $this->getPageBaseUrl() . '/' . $this->getNextPageNumber();
+	}
+
+	public function getLastPageUrl()
+	{
+		$page = $this->getTotalPages();
+
+		return $this->getPageBaseUrl() . '/' . $page;
+	}
+
+	public function getPrevPageNumber () {
+		$page = $this->getPrevPage();
+
+		if (!$page) {
+			$page = 1;
+		}
+
+		return $page;
+	}
+
+	public function getNextPageNumber () {
+		$page = $this->getNextPage();
+
+		if (!$page) {
+			$page = $this->getTotalPages();
+		}
+
+		return $page;
+	}
+
+	public function getPage () {
+		return $this->page;
 	}
 
 	public function getTotalPages () {
@@ -59,10 +117,6 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 		}
 
 		return $this->totalPages;
-	}
-
-	public function getPage () {
-		return $this->page;
 	}
 
 	public function getNextPage () {
@@ -78,7 +132,7 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 	public function getPrevPage () {
 		$prev = $this->page - 1;
 
-		if ($prev < 0) {
+		if ($prev <= 0) {
 			$prev = false;
 		}
 

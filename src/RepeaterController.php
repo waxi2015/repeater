@@ -17,8 +17,7 @@ class RepeaterController extends Controller
 		$repeater = new \Repeater($descriptor);
 
 		if (!$repeater->isPermitted($id)) {
-			$this->_forward('error', null, null, array('errorCode' => 901));
-			return false;
+			return array();
 		}
 
 		$field = new \Waxis\Repeater\Repeater\Field\Order($repeater->getFieldByType('order'));
@@ -43,8 +42,6 @@ class RepeaterController extends Controller
 		
 		$order->changeOrder($id, $newOrder);
 
-		$response['message'] = 'Sorrend módosítás sikeres';
-
 		return $response;
 	}
 
@@ -54,8 +51,7 @@ class RepeaterController extends Controller
 		$repeater = new \Repeater($descriptor);
 
 		if (!$repeater->isPermitted($id)) {
-			$this->_forward('error', null, null, array('errorCode' => 901));
-			return false;
+			return array();
 		}
 
 		$table = $repeater->getTable();
@@ -105,8 +101,7 @@ class RepeaterController extends Controller
 		$repeater = new \Repeater($descriptor, $page, $params);
 
 		if (!$repeater->isPermitted()) {
-			$this->_forward('error', null, null, array('errorCode' => 901));
-			return false;
+			return array();
 		}
 
 		if (!empty($refresh)) {
@@ -129,8 +124,7 @@ class RepeaterController extends Controller
 		$repeater = new \Repeater($descriptor, $page, $params);
 
 		if (!$repeater->isPermitted()) {
-			$this->_forward('error', null, null, array('errorCode' => 901));
-			return false;
+			return array();
 		}
 
 		$response['html'] = $repeater->fetch();
