@@ -58,7 +58,7 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 			$to = $total;
 		}
 
-		return "Showing $from to $to of $total entries";
+		return trans('repeater.paginator.display_text', compact('from','to','total'));
 	}
 
 	public function getPageBaseUrl () {

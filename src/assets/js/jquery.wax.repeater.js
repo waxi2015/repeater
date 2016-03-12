@@ -42,7 +42,7 @@
 				$.post('/wax/repeater/changeorder', {descriptor:plugins[id].descriptor, id:$(this).attr('data-id'), order:$(this).val(), _token:$('#' + id).find('[name="_token"]').val()}, function (response){
 					refresh(function(){
 						if (toastr !== undefined) {
-							toastr.success(response.message, 'Üzenet');
+							toastr.success(response.message, Lang.get('repeater.success_msg_title'));
 						}
 					});
 				})
@@ -51,14 +51,14 @@
 			$(document).off('click', '#'+id+' .wax-repeater-delete').on('click', '#'+id+' .wax-repeater-delete', {} ,function(e){
 				e.preventDefault();
 
-				if (!confirm('Biztosan törli?')) {
+				if (!confirm(Lang.get('repeater.confirm_delete_element'))) {
 					return false;
 				}
 				
 				$.post('/wax/repeater/delete', {descriptor:plugins[id].descriptor, id:$(this).attr('data-id'), _token:$('#' + id).find('[name="_token"]').val()}, function (response){
 					refresh(function(){
 						if (toastr !== undefined) {
-							toastr.success(response.message, 'Üzenet');
+							toastr.success(response.message, Lang.get('repeater.success_msg_title'));
 						}
 					});
 				})

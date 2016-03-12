@@ -1,6 +1,6 @@
 <div class="wax-paginator-more">
 	<? if ($this->getNextPage()): ?>
-		<a href="#" class="wax-repeater-more">Load more</a>
-		<div class="wax-repeater-more-loader" style="display: none;">Loading...</div>
+		<a href="#" class="wax-repeater-more"><?=trans('repeater.paginator.button_load_more')?></a>
+		<div class="wax-repeater-more-loader" style="display: none;"><?=trans('repeater.paginator.load_more_loading')?></div>
 	<? endif; ?>
 </div>

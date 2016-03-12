@@ -1,7 +1,7 @@
 <? if (count($this->getPages()) > 1): ?>
 <div class="wax-paginator-pages">
-	<a href="<?=$this->getPageUrl(1)?>" class="wax-repeater-page" data-page="1">«</a>
-	<a href="<?=$this->getPrevPageUrl()?>" class="wax-repeater-page" data-page="<?=($this->getPrevPageNumber())?>">&#8249;</a>
+	<a href="<?=$this->getPageUrl(1)?>" class="wax-repeater-page" data-page="1"><?=trans('repeater.paginator.first')?></a>
+	<a href="<?=$this->getPrevPageUrl()?>" class="wax-repeater-page" data-page="<?=($this->getPrevPageNumber())?>"><?=trans('repeater.paginator.prev')?></a>
 	<? foreach ($this->getPages() as $page): ?>
 		<? if ($page['current']): ?>
 			<a href="<?=$this->getPageUrl($page['page'])?>" class="wax-repeater-page active" data-page="<?=$page['page']?>"><b><?=$page['page']?></b></a>
@@ -9,8 +9,8 @@
 			<a href="<?=$this->getPageUrl($page['page'])?>" class="wax-repeater-page" data-page="<?=$page['page']?>"><?=$page['page']?></a>
 		<? endif; ?>
 	<? endforeach; ?>
-	<a href="<?=$this->getNextPageUrl()?>" class="wax-repeater-page" data-page="<?=($this->getNextPageNumber())?>">&#8250;</a>
-	<a href="<?=$this->getLastPageUrl()?>" class="wax-repeater-page" data-page="<?=($this->getTotalPages())?>">»</a>
+	<a href="<?=$this->getNextPageUrl()?>" class="wax-repeater-page" data-page="<?=($this->getNextPageNumber())?>"><?=trans('repeater.paginator.next')?></a>
+	<a href="<?=$this->getLastPageUrl()?>" class="wax-repeater-page" data-page="<?=($this->getTotalPages())?>"><?=trans('repeater.paginator.last')?></a>
 	<span class="page-info"><?=$this->getPageInfo()?></span>
 </div>
 <? endif; ?>

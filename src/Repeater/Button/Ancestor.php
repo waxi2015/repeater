@@ -88,7 +88,7 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 	}
 
 	public function getLabel () {
-		return $this->label;
+		return trans($this->label);
 	}
 
 	public function getUrl () {

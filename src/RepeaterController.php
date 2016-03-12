@@ -88,7 +88,7 @@ class RepeaterController extends Controller
 			\DB::table($table)->where('id', $id)->delete();
 		}
 
-		$response['message'] = 'Törlés sikeres';
+		$response['message'] = trans('repeater.delete_success_msg');
 
 		return $response;
 	}
