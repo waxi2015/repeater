@@ -124,7 +124,7 @@ class RepeaterController extends Controller
 		return $response;
 	}
 
-	public function list (Request $request) {
+	public function repeat (Request $request) {
 		$descriptor = unserialize(decode($request->descriptor));
 		$page = $request->page;
 		$params = $request->params;
