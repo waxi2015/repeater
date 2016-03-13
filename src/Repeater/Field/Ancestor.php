@@ -137,15 +137,19 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 			return $value;
 		}
 
-		$converter = explode('::',$this->convert['converter']);
-		$class = $converter[0];
-		$method = $converter[1];
+		if (isset($this->convert['converter'])) {
+			$converter = explode('::',$this->convert['converter']);
+			$class = $converter[0];
+			$method = $converter[1];
 
-		$options = getValue($this->convert, 'options', array());
+			$options = getValue($this->convert, 'options', array());
 
-		$params = array_merge(array($value), $options);
+			$params = array_merge(array($value), $options);
 
-		return call_user_func_array($class . '::' . $method, $params);
+			return call_user_func_array($class . '::' . $method, $params);
+		} else {
+			return $this->convert[$value];
+		}
 	}
 
 	public function getData ($key = null) {

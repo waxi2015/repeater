@@ -9,6 +9,11 @@ use App\Http\Controllers\Controller;
 
 class RepeaterController extends Controller
 {
+	public function __construct (Request $request) {
+		if (isset($request->locale)) {
+			\Lang::setLocale($request->locale);
+		}
+	}
 
     public function changeorder (Request $request) {
     	$descriptor = unserialize(decode($request->descriptor));
@@ -41,6 +46,8 @@ class RepeaterController extends Controller
 		$order->setDescriptor($descriptor);
 		
 		$order->changeOrder($id, $newOrder);
+
+		$response['message'] = trans('repeater.order_success_msg');
 
 		return $response;
 	}

@@ -39,10 +39,10 @@
 
 		var initActions = function () {
 			$(document).off('change', '#'+id+' .wax-repeater-order select').on('change', '#'+id+' .wax-repeater-order select', {} ,function(){
-				$.post('/wax/repeater/changeorder', {descriptor:plugins[id].descriptor, id:$(this).attr('data-id'), order:$(this).val(), _token:$('#' + id).find('[name="_token"]').val()}, function (response){
+				$.post('/wax/repeater/changeorder', {descriptor:plugins[id].descriptor, id:$(this).attr('data-id'), order:$(this).val(), locale:Lang.getLocale(), _token:$('#' + id).find('[name="_token"]').val()}, function (response){
 					refresh(function(){
 						if (toastr !== undefined) {
-							toastr.success(response.message, Lang.get('repeater.success_msg_title'));
+							toastr.success(Lang.get(response.message), Lang.get('repeater.success_msg_title'));
 						}
 					});
 				})
@@ -55,10 +55,10 @@
 					return false;
 				}
 				
-				$.post('/wax/repeater/delete', {descriptor:plugins[id].descriptor, id:$(this).attr('data-id'), _token:$('#' + id).find('[name="_token"]').val()}, function (response){
+				$.post('/wax/repeater/delete', {descriptor:plugins[id].descriptor, id:$(this).attr('data-id'), locale:Lang.getLocale(), _token:$('#' + id).find('[name="_token"]').val()}, function (response){
 					refresh(function(){
 						if (toastr !== undefined) {
-							toastr.success(response.message, Lang.get('repeater.success_msg_title'));
+							toastr.success(Lang.get(response.message), Lang.get('repeater.success_msg_title'));
 						}
 					});
 				})
@@ -142,7 +142,7 @@
 
 				removeFromParams('page');
 
-				$.post('/wax/repeater/more', {descriptor:plugins[id].descriptor, page:plugins[id].page, params:plugins[id].params, _token:$('#' + id).find('[name="_token"]').val()}, function (response) {
+				$.post('/wax/repeater/more', {descriptor:plugins[id].descriptor, page:plugins[id].page, params:plugins[id].params, locale:Lang.getLocale(), _token:$('#' + id).find('[name="_token"]').val()}, function (response) {
 
 					$(elem).find('.wax-repeater-more, .wax-repeater-more-loader').remove();
 
@@ -205,7 +205,7 @@
 		}
 
 		var refreshPages = function (onRefresh) {
-			$.post('/wax/repeater', {page:plugins[id].page, descriptor:plugins[id].descriptor, params:plugins[id].params, _token:$('#' + id).find('[name="_token"]').val()}, function (response) {
+			$.post('/wax/repeater', {page:plugins[id].page, descriptor:plugins[id].descriptor, params:plugins[id].params, locale:Lang.getLocale(), _token:$('#' + id).find('[name="_token"]').val()}, function (response) {
 
 				$(elem).html($(response.html).filter('#' + id).html());
 
@@ -220,7 +220,7 @@
 		}
 
 		var refreshMore = function () {
-			$.post('/wax/repeater/more', {descriptor:plugins[id].descriptor, page:plugins[id].page, refresh:1, params:plugins[id].params, _token:$('#' + id).find('[name="_token"]').val()}, function (response) {
+			$.post('/wax/repeater/more', {descriptor:plugins[id].descriptor, page:plugins[id].page, refresh:1, params:plugins[id].params, locale:Lang.getLocale(), _token:$('#' + id).find('[name="_token"]').val()}, function (response) {
 				$(elem).find('.wax-repeater-more, .wax-repeater-more-loader').remove();
 
 				$(elem).html($(response.html).filter('#' + id).html());
