@@ -1,1 +1,7 @@
-<td<?=$this->getClassString()?><?=$this->getWidthString()?><?=$this->getAlignString()?><?=$this->getStyleString()?>><?=$this->getValue()?></td>
+<td<?=$this->getClassString()?><?=$this->getWidthString()?><?=$this->getAlignString()?><?=$this->getStyleString()?>>
+<? if ($this->isClickable()): ?>
+	<a href="<?=$this->getHref()?>"><?=$this->getValue()?></a>
+<? else: ?>
+	<?=$this->getValue()?>
+<? endif; ?>
+</td>

@@ -5,6 +5,8 @@ namespace Waxis\Repeater\Repeater\Field;
 class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public $type = 'field';
+	
+	public $listId = null;
 
 	public $name = null;
 
@@ -44,11 +46,23 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public $orderSignDesc = ' <span class="fa fa-caret-down"> ';
 
+	public $valueFormat = null;
+
+	public $source = null;
+
+	public $href = null;
+
+	public $clickable = null;
+
 	public function __construct ($descriptor, $value = null, $row = null) {
 		$this->row = $row;
 
 		if (isset($descriptor['name'])) {
 			$this->name = $descriptor['name'];
+		}
+
+		if (isset($descriptor['listId'])) {
+			$this->listId = $descriptor['listId'];
 		}
 
 		if (isset($descriptor['label'])) {
@@ -95,6 +109,22 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 			$this->orderDisabled = $descriptor['orderDisabled'];
 		}
 
+		if (isset($descriptor['value'])) {
+			$this->valueFormat = $descriptor['value'];
+		}
+
+		if (isset($descriptor['source'])) {
+			$this->source = $descriptor['source'];
+		}
+
+		if (isset($descriptor['href'])) {
+			$this->href = $descriptor['href'];
+		}
+
+		if (isset($descriptor['clickable'])) {
+			$this->clickable = $descriptor['clickable'];
+		}
+
 		if ($value !== null) {
 			$this->value = $value;
 		}
@@ -104,6 +134,29 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public function renderLabel () {
 		echo $this->fetchLabel();
+	}
+
+	public function getHref () {
+		if ($this->href !== null) {
+			return $this->href;
+		}
+
+		$row = to_array($this->row);
+
+		# work with cms, assuming that list id is same as tab name
+		if ($this->clickable !== null) {
+			return config('cms.url') . '/' . $this->getListId() . '/edit/' . $row['id']; 
+		}
+
+		return false;
+	}
+
+	public function isClickable () {
+		if ($this->href !== null || $this->clickable !== null) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public function fetchLabel () {
@@ -133,11 +186,21 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 	}
 
 	public function convert ($value) {
-		if ($this->convert === null) {
-			return $value;
+		if($this->valueFormat !== null && preg_match_all('/{+(.*?)}/', $this->valueFormat, $matches)) {
+			$value = $this->valueFormat;
+			$row = to_array($this->row);
+			foreach ($matches[1] as $match) {
+		    	$value = str_replace('{'.$match.'}', $row[$match], $value);
+			}
 		}
 
-		if (isset($this->convert['converter'])) {
+		if ($this->source !== null) {
+			$value = isset($this->source[$value]) ? $this->source[$value] : $value;
+		}
+
+		if ($this->convert === null) {
+			return $value;
+		} elseif (isset($this->convert['converter'])) {
 			$converter = explode('::',$this->convert['converter']);
 			$class = $converter[0];
 			$method = $converter[1];
@@ -147,8 +210,10 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 			$params = array_merge(array($value), $options);
 
 			return call_user_func_array($class . '::' . $method, $params);
-		} else {
+		} elseif (isset($this->convert[$value])) {
 			return $this->convert[$value];
+		} else {
+			return $value;
 		}
 	}
 
@@ -203,6 +268,10 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 	}
 
 	public function getStyleString () {
+		if ($this->align !== null) {
+			$this->style .= 'text-align: right;';
+		}
+
 		if ($this->style === null) {
 			return false;
 		}
@@ -232,6 +301,10 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public function getOrder () {
 		return $this->order;
+	}
+
+	public function getListId () {
+		return $this->listId;
 	}
 
 	public function getOrderDisabled () {

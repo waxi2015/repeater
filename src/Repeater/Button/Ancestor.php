@@ -126,7 +126,12 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public function getData ($key = null) {
 		if ($key !== null) {
-			return $this->data[$this->index]->{$key};
+			if (isset($this->data[$this->index]->{$key})) {
+				return $this->data[$this->index]->{$key};
+			} elseif ($this->data[$this->index][$key]) {
+				return $this->data[$this->index][$key];
+			}
+
 		}
 
 		return $this->data;

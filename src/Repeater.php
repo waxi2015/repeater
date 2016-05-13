@@ -248,7 +248,9 @@ class Repeater extends Repeater\Ancestor {
 		return $this->getFieldInstances();
 	}
 
-	public function getRows () {
+	# $createFields: if it should create table fields
+	# or leave the raw data
+	public function getRows ($createFields = true) {
 		$rows = array();
 
 		$data = $this->getData();
@@ -258,7 +260,11 @@ class Repeater extends Repeater\Ancestor {
 		}
 
 		foreach ($data as $key => $row) {
-			$rows[$key] = $this->getFieldInstances($row);
+			if ($createFields) {
+				$rows[$key] = $this->getFieldInstances($row);
+			} else {
+				$rows[$key] = to_array($row);
+			}
 		}
 
 		return $rows;
@@ -273,11 +279,16 @@ class Repeater extends Repeater\Ancestor {
 		$field['order'] = $this->order;
 		$field['orderBy'] = $this->orderBy;
 		$field['table'] = $this->table;
+		$field['listId'] = $this->id;
 
 		$return = null;
 
 		$fieldName = $field['name'];
 		$value = $row !== null && isset($row->$fieldName) ? $row->$fieldName : null;
+
+		if ($value === null && $row !== null && is_array($row) && isset($row[$fieldName])) {
+			$value = $row[$fieldName];
+		}
 
 		switch ($field['type']) {
 			case 'image':
@@ -527,7 +538,6 @@ class Repeater extends Repeater\Ancestor {
 
 			# if it's a string then it's a table name
 			if (is_string($this->source)) {
-				$users = \DB::table('users')->get();
 				$sourceAdapter = new Repeater\Source\Db($this->source, $options);
 
 			# if it's an array can be an array of data or class method

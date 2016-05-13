@@ -40,11 +40,23 @@ class Ancestor {
 		$descriptorValue = $this->getFilterDescriptorValue($filter);
 		$setValue = $this->getFilterSetValue($filter);
 
+		/*
+	
+		@todo: under watch
+		
 		if (empty($descriptorValue) && empty($setValue)) {
 			return null;
 		} elseif (!empty($setValue)) {
 			$value = $setValue;
 		} elseif (!empty($descriptorValue)) {
+			$value = $descriptorValue;
+		}*/
+
+		if (($descriptorValue === null || $descriptorValue === '') && ($setValue === null || $setValue === '')) {
+			return null;
+		} elseif ($setValue !== null && $setValue !== '') {
+			$value = $setValue;
+		} elseif ($descriptorValue !== null && $descriptorValue !== '') {
 			$value = $descriptorValue;
 		}
 

@@ -83,7 +83,7 @@ class Batch extends Ancestor {
 							break;
 
 						default:
-							if (strstr($fieldValue, $filterValue) !== false) {
+							if (strstr(linkRewrite($fieldValue), linkRewrite($filterValue)) !== false) {
 								$fieldMatch = true;
 							}
 							break;

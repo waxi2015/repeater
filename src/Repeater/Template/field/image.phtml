@@ -1,1 +1,8 @@
-<td><img src="<?=$this->getValue()?>"></td>
+<td<?=$this->getClassString()?><?=$this->getAlignString()?><?=$this->getStyleString()?>>
+<? if ($this->isClickable()): ?>
+	<a href="<?=$this->getHref()?>"><img src="<?=$this->getValue()?>"></a>
+<? else: ?>
+	<img src="<?=$this->getValue()?>">
+<? endif; ?>
+
+</td>
