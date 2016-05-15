@@ -269,7 +269,7 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public function getStyleString () {
 		if ($this->align !== null) {
-			$this->style .= 'text-align: right;';
+			$this->style .= 'text-align: ' . $this->align . ';';
 		}
 
 		if ($this->style === null) {

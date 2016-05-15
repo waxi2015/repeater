@@ -77,7 +77,7 @@ class Batch extends Ancestor {
 							break;
 
 						case 'SELECT':
-							if ($fieldValue == $filterValue) {
+							if ((string) $fieldValue == (string) $filterValue) {
 								$fieldMatch = true;
 							}
 							break;

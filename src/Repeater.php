@@ -62,6 +62,8 @@ class Repeater extends Repeater\Ancestor {
 
 	public $instantiate = null;
 
+	public $emptyText = 'repeater.empty_text';
+
 	# name of the descriptor
 	public function __construct($descriptor, $page = 1, $params = null) {
 		if ($this->descriptor === null) {
@@ -185,6 +187,10 @@ class Repeater extends Repeater\Ancestor {
 
 		if (isset($descriptor['instantiate'])) {
 			$this->instantiate = $descriptor['instantiate'];
+		}
+
+		if (isset($descriptor['emptyText'])) {
+			$this->emptyText = $descriptor['emptyText'];
 		}
 
 		if (isset($params['limit'])) {
@@ -622,6 +628,10 @@ class Repeater extends Repeater\Ancestor {
 
 	public function getClass () {
 		return $this->class;
+	}
+
+	public function getEmptyText () {
+		return trans($this->emptyText);
 	}
 
 	public function getDescriptor () {
