@@ -105,6 +105,11 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 			if ($value === false) {
 				$value = isset($this->data[$this->index]->{$var}) ? $this->data[$this->index]->{$var} : false;
 			}
+
+			# if it's not a property look for it in the data array
+			if ($value === false) {
+				$value = isset($this->data[$this->index][$var]) ? $this->data[$this->index][$var] : false;
+			}
 			
 			$this->url = str_replace($one, $value, $this->url);
 		}

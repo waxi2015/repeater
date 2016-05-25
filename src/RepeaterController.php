@@ -52,6 +52,23 @@ class RepeaterController extends Controller
 		return $response;
 	}
 
+    public function edit (Request $request) {
+    	$descriptor = unserialize(decode($request->descriptor));
+		$id = $request->id;
+
+		$repeater = new \Repeater($descriptor);
+
+		if (!$repeater->isPermitted($id)) {
+			return array();
+		}
+
+		$form = new \Form($repeater->getFormDescriptor('edit'), $id);
+
+		$response['html'] = $form->fetch();
+
+		return $response;
+	}
+
 	public function delete (Request $request) {
     	$descriptor = unserialize(decode($request->descriptor));
 		$id = $request->id;

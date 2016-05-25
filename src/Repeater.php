@@ -64,6 +64,12 @@ class Repeater extends Repeater\Ancestor {
 
 	public $emptyText = 'repeater.empty_text';
 
+	public $vars = [];
+
+	public $form = null;
+
+	public $actions = null;
+
 	# name of the descriptor
 	public function __construct($descriptor, $page = 1, $params = null) {
 		if ($this->descriptor === null) {
@@ -191,6 +197,18 @@ class Repeater extends Repeater\Ancestor {
 
 		if (isset($descriptor['emptyText'])) {
 			$this->emptyText = $descriptor['emptyText'];
+		}
+
+		if (isset($descriptor['vars'])) {
+			$this->vars = $descriptor['vars'];
+		}
+
+		if (isset($descriptor['form'])) {
+			$this->form = $descriptor['form'];
+		}
+
+		if (isset($descriptor['actions'])) {
+			$this->actions = $descriptor['actions'];
 		}
 
 		if (isset($params['limit'])) {
@@ -498,6 +516,10 @@ class Repeater extends Repeater\Ancestor {
 					$instance = new Repeater\Button\Edit($button, $data, $index);
 					break;
 
+				case 'editpopup':
+					$instance = new Repeater\Button\Editpopup($button, $data, $index);
+					break;
+
 				default:
 					$instance = new Repeater\Button\Ancestor($button, $data, $index);
 			}
@@ -636,5 +658,94 @@ class Repeater extends Repeater\Ancestor {
 
 	public function getDescriptor () {
 		return $this->descriptor;
+	}
+
+	public function getFormDescriptor ($type = 'add') {
+		$descriptor = $this->form['descriptor'];
+
+		if (is_string($descriptor)) {
+			$descriptor = '\App\Descriptors\Form\\' . ucfirst($descriptor);
+
+			if (class_exists($descriptor . '_' . strtolower($type))) {
+				$descriptor .= '_' . strtolower($type);
+			}
+
+			$descriptor = new $descriptor;
+			$descriptor = $descriptor->descriptor();
+		}
+
+		$descriptor['feedback'] = [
+			'false' => [
+				'valid' => false,
+			],
+			'true' => [
+				'valid' => true,
+				'message' => 'repeater.success_process',
+				'params' => ['repeaterId' => $this->getId()]
+			]
+		];
+
+		if (!isset($descriptor['data'])) {
+			$descriptor['data'] = [];
+		}
+
+		$descriptor['data']['success'] = 'waxrepeater.refreshAfterFormSave';
+
+		$descriptor['save'] = true;
+		$descriptor['table'] = $this->getTable();
+
+		$structureTypes = ['sections','brows','bcolumns','rows','columns','elements'];
+		$formStructureType = 'elements';
+
+		foreach ($structureTypes as $type) {
+			if (isset($descriptor[$type])) {
+				$formStructureType = $type;
+			}
+		}
+
+		$addon = [
+			'class' => 'hidden',
+			'type' => 'hidden',
+			'name' => 'id',
+		];
+
+		if ($formStructureType != 'elements') {
+			$addon = [
+				'class' => 'hidden',
+				'elements' => [$addon]
+			];
+		}
+
+		$descriptor[$formStructureType][] = $addon;
+
+		return $descriptor;
+	}
+
+	public function getForm ($type = 'add') {
+		return new \Form($this->getFormDescriptor($type), $this->vars);
+	}
+
+	public function isAdd () {
+		if ($this->actions !== null && in_array('add',$this->actions)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function isEdit () {
+		if ($this->actions !== null && in_array('edit',$this->actions)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function getFormLabel () {
+		if (isset($this->form['labels'])) {
+			return $this->descriptor['form']['labels'];
+		}
+
+		return false;
 	}
 }

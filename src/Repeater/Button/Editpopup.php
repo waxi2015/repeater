@@ -2,9 +2,9 @@
 
 namespace Waxis\Repeater\Repeater\Button;
 
-class Delete extends Ancestor {
+class Editpopup extends Ancestor {
 
-	public $baseClass = 'wax-repeater-delete btn-sm btn-danger';
+	public $baseClass = 'wax-repeater-edit-popup btn-sm btn-primary';
 
 	public function __construct ($descriptor, $data = null, $index = null) {
 		parent::__construct($descriptor, $data, $index);

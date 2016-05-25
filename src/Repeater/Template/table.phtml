@@ -27,6 +27,62 @@
 	<? else: ?>
 		<div class="wax-repeater-empty"><?=$this->getEmptyText()?></div>
 	<? endif; ?>
+
+	<? if ($this->isAdd()): ?>
+		<div class="wax-repeater-buttons">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-<?=$this->getId()?>"><?=trans('repeater.add_button', ['label' => $this->getFormLabel()])?></button>
+		</div>
+		
+		<div class="modal fade" id="add-<?=$this->getId()?>" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title"><?=trans('repeater.add_title', ['label' => $this->getFormLabel()])?></h4>
+		      </div>
+		      <div class="modal-body">
+		      	<!--<?=$this->getForm('add')->render()?>-->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal"><?=trans('repeater.popup_form_close')?></button>
+	        	<button type="button" class="btn btn-primary do-submit-add"><?=trans('repeater.popup_form_save')?></button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<script>
+			$(function(){
+				waxrepeater.createAddModal('<?=$this->getId()?>');
+			})
+		</script>
+	<? endif; ?>
+
+	<? if ($this->isEdit()): ?>
+		<div class="modal fade" id="edit-<?=$this->getId()?>" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title"><?=trans('repeater.edit_title', ['label' => $this->getFormLabel()])?></h4>
+		      </div>
+		      <div class="modal-body">
+		      	
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal"><?=trans('repeater.popup_form_close')?></button>
+	        	<button type="button" class="btn btn-primary do-submit-edit"><?=trans('repeater.popup_form_save')?></button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<script>
+			$(function(){
+				waxrepeater.createEditModal('<?=$this->getId()?>');
+			})
+		</script>
+	<? endif; ?>
 </div>
 
 <?=$this->renderJavascript('init.phtml')?>

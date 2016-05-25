@@ -21,7 +21,7 @@ class Query extends Db {
 
 		# Laravel was missing reset order/limit/offset
 		$query->orders = null;
-		$query->from = null;
+		$query->offset = null;
 		$query->limit = null;
 
 		return $query;
