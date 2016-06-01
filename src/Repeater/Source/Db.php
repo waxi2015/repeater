@@ -35,7 +35,7 @@ class Db extends Ancestor {
 		$query = \DB::table($this->source);
 
 		if ($this->where !== null) {
-			$query->whereRaw($this->where);
+			$query->whereRaw('('.$this->where.')');
 		}
 
 		if ($this->filters !== null) {
@@ -91,6 +91,10 @@ class Db extends Ancestor {
 
 					case 'SELECT':
 						$wherepart .= '`' .$field . '` like "' . $value . '"';
+						break;
+
+					case 'MULTISELECT':
+						$wherepart .= '`' .$field . '` IN ("'.implode('","', $value).'")';
 						break;
 
 					default:

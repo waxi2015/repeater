@@ -8,7 +8,7 @@ class Query extends Db {
 		$query = $this->source;
 
 		if ($this->where !== null) {
-			$query->whereRaw($this->where);
+			$query->whereRaw('('.$this->where.')');
 		}
 
 		if ($this->filters !== null) {
@@ -18,7 +18,7 @@ class Query extends Db {
 				$query->whereRaw($filter);
 			}
 		}
-
+		//DX($this->filters);
 		# Laravel was missing reset order/limit/offset
 		$query->orders = null;
 		$query->offset = null;

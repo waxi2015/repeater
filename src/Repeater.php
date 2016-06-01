@@ -387,6 +387,7 @@ class Repeater extends Repeater\Ancestor {
 		$source->setPage($this->page);
  
 		$data = $source->getData();
+		//dd(\DB::getQueryLog());
 		
 		if ($this->getInstantiate()) {
 			$data = $this->convertToInstantiate($data);
@@ -674,16 +675,18 @@ class Repeater extends Repeater\Ancestor {
 			$descriptor = $descriptor->descriptor();
 		}
 
-		$descriptor['feedback'] = [
-			'false' => [
-				'valid' => false,
-			],
-			'true' => [
-				'valid' => true,
-				'message' => 'repeater.success_process',
-				'params' => ['repeaterId' => $this->getId()]
-			]
-		];
+		if (!isset($descriptor['feedback'])) {	
+			$descriptor['feedback'] = [
+				'false' => [
+					'valid' => false,
+				],
+				'true' => [
+					'valid' => true,
+					'message' => 'repeater.success_process',
+					'params' => ['repeaterId' => $this->getId()]
+				]
+			];
+		}
 
 		if (!isset($descriptor['data'])) {
 			$descriptor['data'] = [];
@@ -691,7 +694,9 @@ class Repeater extends Repeater\Ancestor {
 
 		$descriptor['data']['success'] = 'waxrepeater.refreshAfterFormSave';
 
-		$descriptor['save'] = true;
+		if (!array_key_exists('save', $descriptor)) {
+			$descriptor['save'] = true;
+		}
 		$descriptor['table'] = $this->getTable();
 
 		$structureTypes = ['sections','brows','bcolumns','rows','columns','elements'];
