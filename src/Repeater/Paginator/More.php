@@ -4,6 +4,8 @@ namespace Waxis\Repeater\Repeater\Paginator;
 
 class More extends Ancestor {
 
+	public $paginatorType = 'more';
+
 	public $template = 'more.phtml';
 
 	public $refresh = false;
@@ -14,9 +16,9 @@ class More extends Ancestor {
 		if (isset($options['refresh'])) {
 			$this->refresh = $options['refresh'];
 		}
-
-		if (isset($options['autoload'])) {
-			$this->autoload = $options['autoload'];
+		
+		if (isset($descriptor['autoload'])) {
+			$this->autoload = $descriptor['autoload'];
 		}
 
 		parent::__construct($descriptor, $options);

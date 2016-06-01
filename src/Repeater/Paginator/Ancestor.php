@@ -22,6 +22,8 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public $init = true;
 
+	public $paginatorType = null;
+
 	public function __construct ($descriptor, $options) {
 		$this->page = $options['page'];
 		$this->total = $options['total'];
@@ -165,5 +167,9 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public function getInit () {
 		return $this->init;
+	}
+
+	public function getPaginatorType () {
+		return $this->paginatorType;
 	}
 }

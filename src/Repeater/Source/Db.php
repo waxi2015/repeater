@@ -86,7 +86,7 @@ class Db extends Ancestor {
 						$from = !empty($value[0]) ? $value[0] : '0000-01-01';
 						$to = !empty($value[1]) ? $value[1] : '9999-01-01';
 
-						$wherepart .= '`' . $field . '` BETWEEN "' . $from . '" AND "' . $to . '"';
+						$wherepart .= '`' . $field . '` BETWEEN "' . $from . ' 00:00:00" AND "' . $to . ' 23:59:59"';
 						break;
 
 					case 'SELECT':

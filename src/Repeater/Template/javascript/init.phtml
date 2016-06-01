@@ -6,10 +6,10 @@
 	</script>
 <? endif; ?>
 
-<? if ($this->getPaginator()->getType() == 'more' && $this->getPaginator()->getAutoload()): ?>
+<? if ($this->getPaginator()->getPaginatorType() == 'more' && $this->getPaginator()->getAutoload()): ?>
 	<script>
 		$(function(){
-			$(window).unbind('scroll').bind('scroll',function(e){
+			$(document).unbind('scroll').bind('scroll',function(e){
 				var repeater = $('#<?=$this->getId()?>'),
 					offset = repeater.offset(),
 					height = repeater.height(),

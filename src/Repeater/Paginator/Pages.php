@@ -4,6 +4,8 @@ namespace Waxis\Repeater\Repeater\Paginator;
 
 class Pages extends Ancestor {
 
+	public $paginatorType = 'pages';
+
 	public $template = 'pages.phtml';
 
 	public $totalPages = null;
