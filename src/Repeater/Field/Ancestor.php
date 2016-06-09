@@ -195,7 +195,23 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 		}
 
 		if ($this->source !== null) {
-			$value = isset($this->source[$value]) ? $this->source[$value] : $value;
+			$source = $this->source;
+
+			if (isset($source['class']) && isset($source['method'])) {
+				$sourceClass = $source['class'];
+				$sourceMethod = $source['method'];
+				$source = new $sourceClass;
+				$source = $source->$sourceMethod();
+			}
+
+			if (!is_array($source) && strstr($source, '::')){
+				$source = explode('::',$source);
+				$sourceClass = $source[0];
+				$sourceMethod = $source[1];
+				$source = call_user_func($sourceClass . '::' . $sourceMethod);
+			}
+
+			$value = isset($source[$value]) ? $source[$value] : $value;
 		}
 
 		if ($this->convert === null) {
