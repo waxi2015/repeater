@@ -74,7 +74,7 @@ class RepeaterController extends Controller
 		$id = $request->id;
 		$repeater = new \Repeater($descriptor);
 
-		if (!$repeater->isPermitted($id)) {
+		if (!$repeater->isPermitted($id, 'delete')) {
 			return array();
 		}
 

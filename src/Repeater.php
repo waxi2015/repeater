@@ -14,6 +14,8 @@ class Repeater extends Repeater\Ancestor {
 
 	public $ownerField = null;
 
+	public $guard = null;
+
 	public $descriptor = null;
 
 	public $init = true;
@@ -113,6 +115,10 @@ class Repeater extends Repeater\Ancestor {
 
 		if (isset($descriptor['ownerField'])) {
 			$this->ownerField = $descriptor['ownerField'];
+		}
+
+		if (isset($descriptor['guard'])) {
+			$this->guard = $descriptor['guard'];
 		}
 
 		if (isset($descriptor['init'])) {
@@ -435,30 +441,56 @@ class Repeater extends Repeater\Ancestor {
 		return $this->permission;
 	}
 
-	public function isPermitted ($recordId = false) {
-		# @todo: megírni
-
-		if ($this->getPermission() === null) {
-			return true;
+	public function getGuard ($action = null) {
+		if ($this->guard === null) {
+			return null;
 		}
 
-		if (\Auth::guard($this->getPermission())->check()) {
-
-			if ($this->getOwnerField() !== null && $recordId) {
-				$result = collect(\DB::table($this->getTable())
-					->where('id', $recordId)->first())->toArray();
-
-				if (isset($result[$this->getOwnerField()]) && $result[$this->getOwnerField()] == \Auth::guard('admin')->user()->id) {
-					return true;
-				}
-
-				return false;
+		if ($action !== null) {
+			if (isset($this->guard[$action])) {
+				return $this->guard[$action];
 			} else {
-				return true;
+				return null;
+			}
+		} else {
+			if (is_array($this->guard)) {
+				return null;
+			} else {
+				return $this->guard;
+			}
+			
+		}
+
+	}
+
+	public function isPermitted ($recordId = false, $action = null) {
+		$return = true;
+
+		if ($this->getPermission() !== null) {
+			if (\Auth::guard($this->getPermission())->check()) {
+				if ($this->getOwnerField() !== null && $recordId) {
+					$result = collect(\DB::table($this->getTable())
+						->where('id', $recordId)->first())->toArray();
+
+					if (isset($result[$this->getOwnerField()]) && $result[$this->getOwnerField()] == \Auth::guard('admin')->user()->id) {
+						$return = true;
+					} else {
+						$return = false;
+					}
+				} else {
+					$return = true;
+				}
+			} else {
+				$return = false;
 			}
 		}
 
-		return false;
+		if ($return === true && $this->getGuard($action) !== null) {
+			$guard = $this->getGuard($action);
+			$return = $guard($recordId);
+		}
+
+		return $return;
 	}
 
 	public function getOwnerField () {
@@ -698,6 +730,12 @@ class Repeater extends Repeater\Ancestor {
 			$descriptor['save'] = true;
 		}
 		$descriptor['table'] = $this->getTable();
+
+		if (isset($descriptor['id'])) {
+			$descriptor['id'] = $descriptor['id'] . '-' . $type;
+		} else {
+			$descriptor['id'] = $this->getId() . '-' . $type;
+		}
 
 		$structureTypes = ['sections','brows','bcolumns','rows','columns','elements'];
 		$formStructureType = 'elements';
