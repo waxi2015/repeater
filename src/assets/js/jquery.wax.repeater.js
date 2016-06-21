@@ -64,6 +64,15 @@
 				})
 			})
 
+			$(document).off('click', '#'+id+' .wax-repeater-edit-popup').on('click', '#'+id+' .wax-repeater-edit-popup', {} ,function(e){
+				e.preventDefault();
+				
+				$.post('/wax/repeater/edit', {descriptor:plugins[id].descriptor, id:$(this).attr('data-id'), locale:Lang.getLocale(), _token:$('#' + id).find('[name="_token"]').val()}, function (response){
+					$('#edit-'+id+' .modal-body').html(response.html);
+					$('#edit-'+id+'').modal('show');
+				})
+			})
+
 			$(document).off('click', '#'+id+' .wax-repeater-change-order').on('click', '#'+id+' .wax-repeater-change-order', {} ,function(e){
 				e.preventDefault();
 
@@ -216,6 +225,8 @@
 				if (typeof onRefresh == 'function') {
 					onRefresh.call(this);
 				}
+
+				window.history.pushState(false, document.title, getUrlWithoutPage() + plugins[id].page);
 			});
 		}
 
@@ -292,14 +303,14 @@
 				}
 
 				// third param is A CALLBACK
-				if (onSuccess !== undefined) {
+				if (action != 'refresh' && onSuccess !== undefined) {
 					plugins[id].callback = onSuccess;
 				}
 
 				switch (action) {
 					// do REFRESH
 					case 'refresh':
-						refresh();
+						refresh(onSuccess);
 						break;
 
 					case 'getParams':

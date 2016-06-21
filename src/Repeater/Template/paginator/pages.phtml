@@ -1,16 +1,40 @@
 <? if (count($this->getPages()) > 1): ?>
 <div class="wax-paginator-pages">
-	<a href="<?=$this->getPageUrl(1)?>" class="wax-repeater-page" data-page="1"><?=trans('repeater.paginator.first')?></a>
-	<a href="<?=$this->getPrevPageUrl()?>" class="wax-repeater-page" data-page="<?=($this->getPrevPageNumber())?>"><?=trans('repeater.paginator.prev')?></a>
-	<? foreach ($this->getPages() as $page): ?>
+	<?/*<a href="<?=$this->getPageUrl(1)?>" class="wax-repeater-page first" data-page="1"><span class="icon ion-ios-arrow-left"></span><span class="icon ion-ios-arrow-left"></span></a>*/?>
+	<a href="<?=$this->getPrevPageUrl()?>" class="wax-repeater-page prev<?=$this->page==1?' invisible':''?>" data-page="<?=($this->getPrevPageNumber())?>"><?=trans('repeater.paginator.prev')?></a>
+
+	<? if ($this->page > 2 && $this->getTotalPages() > 3): ?>
+		<a href="1" class="wax-repeater-page page first-page-number" data-page="1">1</a>
+		<span class="dots">...</span>
+	<? endif; ?>
+
+	<? foreach ($this->getPages() as $key => $page): ?>
+		<? 
+			$first = $last = '';
+			if ($key == 0) {
+				$first = ' first-page';
+			}
+
+			if ($key + 1 == count($this->getPages())) {
+				$last = ' last-page';
+			}
+		?>
 		<? if ($page['current']): ?>
-			<a href="<?=$this->getPageUrl($page['page'])?>" class="wax-repeater-page active" data-page="<?=$page['page']?>"><b><?=$page['page']?></b></a>
+			<a href="<?=$this->getPageUrl($page['page'])?>" class="wax-repeater-page page active<?=$first.$last?>" data-page="<?=$page['page']?>"><b><?=$page['page']?></b></a>
 		<? else: ?>
-			<a href="<?=$this->getPageUrl($page['page'])?>" class="wax-repeater-page" data-page="<?=$page['page']?>"><?=$page['page']?></a>
+			<a href="<?=$this->getPageUrl($page['page'])?>" class="wax-repeater-page page<?=$first.$last?>" data-page="<?=$page['page']?>"><?=$page['page']?></a>
 		<? endif; ?>
 	<? endforeach; ?>
-	<a href="<?=$this->getNextPageUrl()?>" class="wax-repeater-page" data-page="<?=($this->getNextPageNumber())?>"><?=trans('repeater.paginator.next')?></a>
-	<a href="<?=$this->getLastPageUrl()?>" class="wax-repeater-page" data-page="<?=($this->getTotalPages())?>"><?=trans('repeater.paginator.last')?></a>
+
+	<? if ($this->page < $this->getTotalPages() - 1 && $this->getTotalPages() > 3): ?>	
+		<span class="dots">...</span>
+		<a href="<?=$this->getLastPageUrl()?>" class="wax-repeater-page page last-page-number" data-page="<?=($this->getTotalPages())?>"><?=$this->getTotalPages()?></a>
+	<? endif; ?>
+
+	<?/*<a href="<?=$this->getLastPageUrl()?>" class="wax-repeater-page last" data-page="<?=($this->getTotalPages())?>"><span class="icon ion-ios-arrow-right"></span><span class="icon ion-ios-arrow-right"></span></a>*/?>
+	<a href="<?=$this->getNextPageUrl()?>" class="wax-repeater-page next<?=$this->page==$this->getTotalPages()?' invisible':''?>" data-page="<?=($this->getNextPageNumber())?>"><?=trans('repeater.paginator.next')?></a>
+
 	<span class="page-info"><?=$this->getPageInfo()?></span>
 </div>
 <? endif; ?>
+<input type="hidden" id="currentpage" name="currentpage" value="<?=$this->page?>" />

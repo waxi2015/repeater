@@ -21,7 +21,7 @@ class RepeaterServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/Repeater/Template/custom.phtml' => resource_path('views/repeater/custom.phtml'),
             __DIR__.'/Descriptors/Example.php' => app_path('Descriptors/Repeater/Example.php'),
-            __DIR__.'/assets' => resource_path('assets/libs/repeater/'),
+            __DIR__.'/assets' => resource_path('assets/common/libs/repeater/'),
             __DIR__.'/lang' => resource_path('lang'),
         ]);
     }
