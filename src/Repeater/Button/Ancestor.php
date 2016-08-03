@@ -80,7 +80,15 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 	public function getDataValue ($key) {
 		$row = $this->getRow();
 
-		return $row[$key];
+		if (isset($row->$key)) {
+			return $row->$key;
+		}
+
+		if (array_key_exists($key, $row)) {
+			return $row[$key];
+		}
+
+		return null;
 	}
 
 	public function getRow () {
