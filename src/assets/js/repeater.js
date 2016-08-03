@@ -2,7 +2,9 @@ var waxrepeater = {
 	refreshAfterFormSave : function (response) {
 		$('#edit-' + response.params.repeaterId).modal('hide');
 		$('#add-' + response.params.repeaterId).modal('hide');
-		$('#' + response.params.repeaterId).waxrepeater('refresh');
+		$('#' + response.params.repeaterId).waxrepeater('refresh', {
+			refreshUrl : false
+		});
 	},
 	createAddModal : function (repeaterId) {
 		var modal = $('#add-'+repeaterId).clone();

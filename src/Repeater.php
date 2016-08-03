@@ -530,6 +530,10 @@ class Repeater extends Repeater\Ancestor {
 
 		$data = $this->getData();
 
+		if ($this->getConverter() !== null) {
+			$data = call_user_func($this->converter, $data);
+		}
+		
 		$buttons = array();
 
 		foreach ($this->buttons as $button) {
@@ -707,16 +711,17 @@ class Repeater extends Repeater\Ancestor {
 			$descriptor = $descriptor->descriptor();
 		}
 
-		if (!isset($descriptor['feedback'])) {	
-			$descriptor['feedback'] = [
-				'false' => [
-					'valid' => false,
-				],
-				'true' => [
-					'valid' => true,
-					'message' => 'repeater.success_process',
-					'params' => ['repeaterId' => $this->getId()]
-				]
+		if (!isset($descriptor['feedback']) || !isset($descriptor['feedback']['false'])) {
+			$descriptor['feedback']['false'] = [
+				'valid' => false
+			];
+		}
+
+		if (!isset($descriptor['feedback']) || !isset($descriptor['feedback']['true'])) {
+			$descriptor['feedback']['true'] = [
+				'valid' => true,
+				'message' => 'repeater.success_process',
+				'params' => ['repeaterId' => $this->getId()]
 			];
 		}
 

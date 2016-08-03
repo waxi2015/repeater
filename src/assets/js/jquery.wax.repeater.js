@@ -51,6 +51,12 @@
 			$(document).off('click', '#'+id+' .wax-repeater-delete').on('click', '#'+id+' .wax-repeater-delete', {} ,function(e){
 				e.preventDefault();
 
+				var refreshUrl = true;
+
+				if ($(this).hasClass('dont-refresh-url')) {
+					refreshUrl = false;
+				}
+
 				if (!confirm(Lang.get('repeater.confirm_delete_element'))) {
 					return false;
 				}
@@ -60,6 +66,8 @@
 						if (toastr !== undefined) {
 							toastr.success(Lang.get(response.message), Lang.get('repeater.success_msg_title'));
 						}
+					}, {
+						refreshUrl : refreshUrl
 					});
 				})
 			})
@@ -201,19 +209,19 @@
 			plugins[id].params = newParams;
 		}
 
-		var refresh = function (onRefresh) {
+		var refresh = function (onRefresh, params) {
 			if (plugins[id].params.page !== undefined && plugins[id].params.page !== null) {
 				plugins[id].page = plugins[id].params['page'];
 			}
 
 			if (type == 'pages') {
-				refreshPages(onRefresh);
+				refreshPages(onRefresh, params);
 			} else {
 				refreshMore();
 			}
 		}
 
-		var refreshPages = function (onRefresh) {
+		var refreshPages = function (onRefresh, params) {
 			$.post('/wax/repeater', {page:plugins[id].page, descriptor:plugins[id].descriptor, params:plugins[id].params, locale:Lang.getLocale(), _token:$('#' + id).find('[name="_token"]').val()}, function (response) {
 
 				$(elem).html($(response.html).filter('#' + id).html());
@@ -226,7 +234,15 @@
 					onRefresh.call(this);
 				}
 
-				window.history.pushState(false, document.title, getUrlWithoutPage() + plugins[id].page);
+				var refreshUrl = true;
+
+				if (params !== undefined && params.refreshUrl !== undefined && params.refreshUrl == false) {
+					refreshUrl = false;
+				}
+
+				if (refreshUrl) {
+					window.history.pushState(false, document.title, getUrlWithoutPage() + plugins[id].page);
+				}
 			});
 		}
 
@@ -310,7 +326,7 @@
 				switch (action) {
 					// do REFRESH
 					case 'refresh':
-						refresh(onSuccess);
+						refresh(onSuccess, parameters);
 						break;
 
 					case 'getParams':
