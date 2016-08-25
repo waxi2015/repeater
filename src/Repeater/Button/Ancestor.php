@@ -143,8 +143,9 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 				return $this->data[$this->index]->{$key};
 			} elseif (isset($this->data[$this->index]) && isset($this->data[$this->index][$key])) {
 				return $this->data[$this->index][$key];
+			} else {
+				return null;
 			}
-
 		}
 
 		return $this->data;
