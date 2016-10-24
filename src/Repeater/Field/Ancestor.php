@@ -237,7 +237,11 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 		$data = $this->row;
 
 		if ($key !== null) {
-			$data = $data->{$key};
+			if (isset($data->{$key})) {
+				$data = $data->{$key};
+			} elseif (isset($data[$key])) {
+				$data = $data[$key];
+			}
 		}
 
 		return $data;
