@@ -20,6 +20,8 @@ class Repeater extends Repeater\Ancestor {
 
 	public $init = true;
 
+	public $initScript = null;
+
 	public $page = 1;
 
 	public $template = 'table.phtml'; // default view
@@ -123,6 +125,10 @@ class Repeater extends Repeater\Ancestor {
 
 		if (isset($descriptor['init'])) {
 			$this->init = $descriptor['init'];
+		}
+
+		if (isset($descriptor['initScript'])) {
+			$this->initScript = $descriptor['initScript'];
 		}
 
 		if (isset($descriptor['template'])) {
@@ -230,6 +236,19 @@ class Repeater extends Repeater\Ancestor {
 		}
 
 		parent::__construct($descriptor);
+	}
+
+	public function getInitScripts () {
+		$scripts = $this->initScript;
+		if ($scripts === null) {
+			return [];
+		}
+
+		if (!isset($scripts[0])) {
+			$scripts = [$scripts];
+		}
+
+		return $scripts;
 	}
 
 	public function refresh () {

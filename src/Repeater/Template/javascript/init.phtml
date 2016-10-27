@@ -1,14 +1,10 @@
-<? if ($this->getPaginator()->getMode() == 'ajax' && $this->getInit()): ?>
-	<script>
-		$(function(){
+<script>
+	$(function(){
+		<? if ($this->getPaginator()->getMode() == 'ajax' && $this->getInit()): ?>
 			$('#<?=$this->getId()?>').waxrepeater({page:<?=$this->getPage()?>, descriptor:'<?=encode(serialize($this->getDescriptor()))?>'});
-		})
-	</script>
-<? endif; ?>
+		<? endif; ?>
 
-<? if ($this->getPaginator()->getPaginatorType() == 'more' && $this->getPaginator()->getAutoload()): ?>
-	<script>
-		$(function(){
+		<? if ($this->getPaginator()->getPaginatorType() == 'more' && $this->getPaginator()->getAutoload()): ?>
 			$(document).unbind('scroll').bind('scroll',function(e){
 				var repeater = $('#<?=$this->getId()?>'),
 					offset = repeater.offset(),
@@ -20,7 +16,11 @@
 				if (windowTop + windowHeight >= top + height) {
 					repeater.find('.wax-repeater-more').click();
 				}
-			});
-		})
-	</script>
-<? endif; ?>
+		});
+		<? endif; ?>
+
+		<? foreach ($this->getInitScripts() as $one): ?>
+			executeFunctionByName('<?=$one['script']?>', window, <?=json_encode($one['data'])?>);
+		<? endforeach; ?>
+	});
+</script>
