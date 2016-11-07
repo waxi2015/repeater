@@ -30,6 +30,10 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public $domData = null;
 
+	public $permission = null;
+
+	public $roles = null;
+
 	public function __construct ($descriptor, $data = null, $index = null) {
 		$this->data = $data;
 		$this->index = $index;
@@ -70,7 +74,33 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 			$this->domData = $descriptor['domData'];
 		}
 
+		if (isset($descriptor['permission'])) {
+			$this->permission = $descriptor['permission'];
+		}
+
+		if (isset($descriptor['roles'])) {
+			$this->roles = $descriptor['roles'];
+		}
+
 		parent::__construct($descriptor);
+	}
+
+	public function hasPermission () {
+		if ($this->permission === null) {
+			return true;
+		}
+
+		if (!\Auth::guard($this->permission)->check()) {
+			return false;
+		}
+
+		$roles = is_array($this->roles) ? $this->roles : [$this->roles];
+
+		if (in_array(\Auth::guard($this->permission)->user()->role, $roles)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public function getHrefString () {

@@ -580,7 +580,9 @@ class Repeater extends Repeater\Ancestor {
 					$instance = new Repeater\Button\Ancestor($button, $data, $index);
 			}
 
-			$buttons[] = $instance->fetch();
+			if ($instance->hasPermission()) {
+				$buttons[] = $instance->fetch();
+			}
 		}
 
 		$buttons = new Repeater\Field\Buttons(null, implode('&nbsp;',$buttons));
