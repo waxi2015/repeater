@@ -138,7 +138,7 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public function getHref () {
 		if ($this->href !== null) {
-			return $this->href;
+			return $this->replaceVariables($this->href);
 		}
 
 		$row = to_array($this->row);
@@ -183,6 +183,17 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 		}
 
 		return false;
+	}
+
+	public function replaceVariables ($value) {
+		if (preg_match_all('/{+(.*?)}/', $value, $matches)) {
+			$row = to_array($this->row);
+			foreach ($matches[1] as $match) {
+		    	$value = str_replace('{'.$match.'}', $row[$match], $value);
+			}
+		}
+
+		return $value;
 	}
 
 	public function convert ($value) {
