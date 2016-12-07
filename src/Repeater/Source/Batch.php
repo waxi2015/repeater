@@ -10,7 +10,27 @@ class Batch extends Ancestor {
 		$return = $this->getBaseData();		
 
 		if ($this->orderBy !== null) {
-			sortBy($this->orderBy, $return, $this->order);
+			if (is_array($this->orderBy)) {
+				$order = array();
+				$multisortOptions = [];
+
+				foreach ($return as $k => $v) {
+					foreach ($this->orderBy as $orderKey => $orderValue) {
+						$order[$orderValue][$k] = $v[$orderValue];
+					}
+				}
+
+				foreach ($this->orderBy as $key => $value) {
+					$multisortOptions[] = $order[$orderValue];
+					$multisortOptions[] = $this->order[$key] == 'ASC' ? SORT_ASC : SORT_DESC;
+				}
+
+				$multisortOptions[] = $return;
+
+				call_user_func_array('array_multisort', $multisortOptions);
+			} else {
+				sortBy($this->orderBy, $return, $this->order);
+			}
 		}
 
 		if ($this->limit !== null) {
