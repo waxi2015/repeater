@@ -255,6 +255,10 @@ class Repeater extends Repeater\Ancestor {
 		$this->refresh = true;
 	}
 
+	public function getTotalCount (){
+		return $this->getSourceAdapter()->getTotalCount();
+	}
+
 	public function getPaginator ($a = true) {
 		if (!isset($this->paginator['type'])) {
 			$this->paginator = [
@@ -264,7 +268,7 @@ class Repeater extends Repeater\Ancestor {
 		
 		$options = array(
 			'limit' => $this->limit,
-			'total' => $this->getSourceAdapter()->getTotalCount(),
+			'total' => $this->getTotalCount(),
 			'page' => $this->page,
 			'displayPages' => $this->displayPages,
 			'autoload' => $this->getAutoload(),
@@ -675,8 +679,8 @@ class Repeater extends Repeater\Ancestor {
 		$static = getValue($source, 'static');
 		$instantiate = getValue($source, 'instantiate');
 
-		$static = false;
-		$instantiate = false;
+		// $static = false;
+		// $instantiate = false;
 
 		if ($static) {
 			$result = $class::$method($this->params, $this);
