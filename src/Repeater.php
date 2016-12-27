@@ -307,6 +307,7 @@ class Repeater extends Repeater\Ancestor {
 		$rows = array();
 
 		$data = $this->getData();
+		\Debugbar::info($data);
 
 		if ($this->getConverter() !== null) {
 			$data = call_user_func($this->converter, $data);
@@ -552,7 +553,6 @@ class Repeater extends Repeater\Ancestor {
 	public function getButtons ($index = null) {
 
 		$data = $this->getData();
-
 		if ($this->getConverter() !== null) {
 			$data = call_user_func($this->converter, $data);
 		}
@@ -588,7 +588,7 @@ class Repeater extends Repeater\Ancestor {
 				$buttons[] = $instance->fetch();
 			}
 		}
-
+		
 		$buttons = new Repeater\Field\Buttons(null, implode('&nbsp;',$buttons));
 
 		return $buttons;

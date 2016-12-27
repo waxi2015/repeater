@@ -8,14 +8,18 @@ class Query extends Db {
 		$query = $this->source;
 
 		if ($this->where !== null) {
-			$query->whereRaw('('.$this->where.')');
+			if (strstr(strtolower($query->toSql()), strtolower($this->where)) === false) {
+				$query->whereRaw($this->where);
+			}
 		}
 
 		if ($this->filters !== null) {
 			$filter = $this->filter();
 
 			if (!empty($filter)) {
-				$query->whereRaw($filter);
+				if (strstr(strtolower($query->toSql()), strtolower($filter)) === false) {
+					$query->whereRaw($filter);
+				}
 			}
 		}
 		//DX($this->filters);

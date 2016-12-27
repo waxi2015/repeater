@@ -35,14 +35,18 @@ class Db extends Ancestor {
 		$query = \DB::table($this->source);
 
 		if ($this->where !== null) {
-			$query->whereRaw('('.$this->where.')');
+			if (strstr(strtolower($query->toSql()), strtolower($this->where)) === false) {
+				$query->whereRaw($this->where);
+			}
 		}
 
 		if ($this->filters !== null) {
 			$filter = $this->filter();
 
 			if (!empty($filter)) {
-				$query->whereRaw($filter);
+				if (strstr(strtolower($query->toSql()), strtolower($filter)) === false) {
+					$query->whereRaw($filter);
+				}
 			}
 		}
 
@@ -105,13 +109,15 @@ class Db extends Ancestor {
 				$wherepart .= '';
 			}
 
-			if (strlen($wherepart) > 0) {
-				$wherepart = '(' . $wherepart . ')';
-			}
+			# removed because using laravel whereRaw
 
-			if (strlen($where) > 0) {
-				$wherepart = ' AND ' . $wherepart;
-			}
+			// if (strlen($wherepart) > 0) {
+			// 	$wherepart = '(' . $wherepart . ')';
+			// }
+
+			// if (strlen($where) > 0) {
+			// 	$wherepart = ' AND ' . $wherepart;
+			// }
 
 			$where .= $wherepart;
 		}
