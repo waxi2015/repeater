@@ -110,7 +110,7 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 	}
 
 	public function getPage () {
-		return $this->page;
+		return empty($this->page) ? 1 : $this->page;
 	}
 
 	public function getTotalPages () {

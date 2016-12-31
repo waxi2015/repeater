@@ -111,13 +111,13 @@ class Db extends Ancestor {
 
 			# removed because using laravel whereRaw
 
-			// if (strlen($wherepart) > 0) {
-			// 	$wherepart = '(' . $wherepart . ')';
-			// }
+			if (strlen($wherepart) > 0) {
+				$wherepart = '(' . $wherepart . ')';
+			}
 
-			// if (strlen($where) > 0) {
-			// 	$wherepart = ' AND ' . $wherepart;
-			// }
+			if (strlen($where) > 0) {
+				$wherepart = ' AND ' . $wherepart;
+			}
 
 			$where .= $wherepart;
 		}

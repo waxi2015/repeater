@@ -35,6 +35,8 @@ class Repeater extends Repeater\Ancestor {
 	public $table = null;
 
 	public $source = null;
+	
+	public $convertedData = null;
 
 	public $sourceAdapter = null;
 
@@ -301,17 +303,27 @@ class Repeater extends Repeater\Ancestor {
 		return $this->getFieldInstances();
 	}
 
+	public function getConvertedData()
+	{
+		if ($this->convertedData !== null) {
+			return $this->convertedData;
+		}
+
+		$data = $this->getData();
+
+		if ($this->getConverter() !== null) {
+			$data = call_user_func($this->converter, $data);
+		}
+
+		return $this->convertedData = $data;
+	}
+
 	# $createFields: if it should create table fields
 	# or leave the raw data
 	public function getRows ($createFields = true) {
 		$rows = array();
 
-		$data = $this->getData();
-		\Debugbar::info($data);
-
-		if ($this->getConverter() !== null) {
-			$data = call_user_func($this->converter, $data);
-		}
+		$data = $this->getConvertedData();
 
 		foreach ($data as $key => $row) {
 			if ($createFields) {
@@ -551,11 +563,7 @@ class Repeater extends Repeater\Ancestor {
 
 	# $index = index of current row
 	public function getButtons ($index = null) {
-
-		$data = $this->getData();
-		if ($this->getConverter() !== null) {
-			$data = call_user_func($this->converter, $data);
-		}
+		$data = $this->getConvertedData();
 		
 		$buttons = array();
 
@@ -588,7 +596,7 @@ class Repeater extends Repeater\Ancestor {
 				$buttons[] = $instance->fetch();
 			}
 		}
-		
+
 		$buttons = new Repeater\Field\Buttons(null, implode('&nbsp;',$buttons));
 
 		return $buttons;
