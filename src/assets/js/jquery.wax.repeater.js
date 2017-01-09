@@ -102,7 +102,10 @@
 				plugins[id].page = $(this).attr('data-page');
 
 				refresh(function(){
-					window.history.pushState(false, document.title, getUrlWithoutPage() + plugins[id].page);
+					// @experimental
+					if (plugins[id].params.refreshUrl === undefined || plugins[id].params.refreshUrl == true) {
+						window.history.pushState(false, document.title, getUrlWithoutPage() + plugins[id].page);
+					}
 					$("html, body").animate({ scrollTop: $('#' + id).offset().top }, 500);
 				})
 			})
@@ -224,7 +227,13 @@
 		var refreshPages = function (onRefresh, params) {
 			$.post('/wax/repeater', {page:plugins[id].page, descriptor:plugins[id].descriptor, params:plugins[id].params, locale:Lang.getLocale(), _token:$('#' + id).find('[name="_token"]').val()}, function (response) {
 
-				$(elem).html($(response.html).filter('#' + id).html());
+				var html = $(response.html).filter('#' + id).html();
+
+				if (html.length == 0) {
+					html = $(response.html).find('#' + id).html();
+				}
+
+				$(elem).html(html);
 
 				if (typeof plugins[id].callback == 'function') {
 					plugins[id].callback.call(this);
@@ -234,15 +243,17 @@
 					onRefresh.call(this);
 				}
 
-				var refreshUrl = true;
+				// @experimental
 
-				if (params !== undefined && params.refreshUrl !== undefined && params.refreshUrl == false) {
-					refreshUrl = false;
-				}
+				// var refreshUrl = true;
 
-				if (refreshUrl) {
-					window.history.pushState(false, document.title, getUrlWithoutPage() + plugins[id].page);
-				}
+				// if (params !== undefined && params.refreshUrl !== undefined && params.refreshUrl == false) {
+				// 	refreshUrl = false;
+				// }
+
+				// if (refreshUrl) {
+				// 	window.history.pushState(false, document.title, getUrlWithoutPage() + plugins[id].page);
+				// }
 			});
 		}
 
