@@ -141,11 +141,11 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 			return $this->replaceVariables($this->href);
 		}
 
-		$row = to_array($this->row);
+		$id = is_array($this->row) ? $this->row['id'] : $this->row->id;
 
 		# work with cms, assuming that list id is same as tab name
 		if ($this->clickable !== null) {
-			return config('cms.url') . '/' . $this->getListId() . '/edit/' . $row['id']; 
+			return config('cms.url') . '/' . $this->getListId() . '/edit/' . $id; 
 		}
 
 		return false;
@@ -187,9 +187,13 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 
 	public function replaceVariables ($value) {
 		if (preg_match_all('/{+(.*?)}/', $value, $matches)) {
-			$row = to_array($this->row);
+			// $row = to_array($this->row);
 			foreach ($matches[1] as $match) {
-		    	$value = str_replace('{'.$match.'}', $row[$match], $value);
+				if (is_array($this->row)) {
+		    		$value = str_replace('{'.$match.'}', $this->row[$match], $value);
+				} else {
+		    		$value = str_replace('{'.$match.'}', $this->row->$match, $value);
+				}
 			}
 		}
 
@@ -199,9 +203,13 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 	public function convert ($value) {
 		if($this->valueFormat !== null && preg_match_all('/{+(.*?)}/', $this->valueFormat, $matches)) {
 			$value = $this->valueFormat;
-			$row = to_array($this->row);
+			//$row = to_array($this->row);
 			foreach ($matches[1] as $match) {
-		    	$value = str_replace('{'.$match.'}', $row[$match], $value);
+				if (is_array($this->row)) {
+		    		$value = str_replace('{'.$match.'}', $this->row[$match], $value);
+				} else {
+		    		$value = str_replace('{'.$match.'}', $this->row->$match, $value);
+				}
 			}
 		}
 

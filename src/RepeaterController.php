@@ -74,6 +74,13 @@ class RepeaterController extends Controller
 		$id = $request->id;
 		$repeater = new \Repeater($descriptor);
 
+		if (!$repeater->canBeDeleted($id)) {
+			return [
+				'error' => 1,
+				'message' => trans($repeater->cantBeDeletedMessage())
+			];
+		}
+
 		if (!$repeater->isPermitted($id, 'delete')) {
 			return array();
 		}
@@ -111,6 +118,8 @@ class RepeaterController extends Controller
 		} else {
 			\DB::table($table)->where('id', $id)->delete();
 		}
+
+		$repeater->runDeleteAfter($record);
 
 		$response['message'] = trans('repeater.delete_success_msg');
 

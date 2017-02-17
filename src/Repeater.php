@@ -76,6 +76,10 @@ class Repeater extends Repeater\Ancestor {
 
 	public $actions = null;
 
+	public $deleteCheck = null;
+
+	public $deleteAfter = null;
+
 	# name of the descriptor
 	public function __construct($descriptor, $page = 1, $params = null) {
 		if ($this->descriptor === null) {
@@ -225,6 +229,14 @@ class Repeater extends Repeater\Ancestor {
 			$this->actions = $descriptor['actions'];
 		}
 
+		if (isset($descriptor['deleteCheck'])) {
+			$this->deleteCheck = $descriptor['deleteCheck'];
+		}
+
+		if (isset($descriptor['deleteAfter'])) {
+			$this->deleteAfter = $descriptor['deleteAfter'];
+		}
+
 		if (isset($params['limit'])) {
 			$this->limit = $params['limit'];
 		}
@@ -238,6 +250,54 @@ class Repeater extends Repeater\Ancestor {
 		}
 
 		parent::__construct($descriptor);
+	}
+
+	public function runDeleteAfter ($record) {
+		if ($this->deleteAfter === null) {
+			return;
+		}
+
+		$afters = !isset($this->deleteAfter[0])
+						? [$this->deleteAfter]
+						: $this->deleteAfter;
+
+		foreach ($afters as $after) {
+			call_user_func(
+				[(new $after['class']), $after['method']],
+				$record);
+		}
+	}
+
+	public function canBeDeleted ($id) {
+		if ($this->deleteCheck === null) {
+			return true;
+		}
+
+		$checkers = !isset($this->deleteCheck[0])
+						? [$this->deleteCheck]
+						: $this->deleteCheck;
+
+		foreach ($checkers as $checker) {
+			if (! call_user_func(
+					[(new $checker['class']), $checker['method']],
+					$id)) {
+
+				$this->setDeleteCheckMessage($checker);
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public function setDeleteCheckMessage ($checker) {
+		$this->deleteCheckMessage = isset($checker['message'])
+										? $checker['message']
+										: 'Could not be deleted.';
+	}
+
+	public function cantBeDeletedMessage () {
+		return $this->deleteCheckMessage;
 	}
 
 	public function getInitScripts () {
@@ -378,6 +438,7 @@ class Repeater extends Repeater\Ancestor {
 		foreach ($this->fields as $field) {
 			$instances[] = $this->getFieldInstance($field, $row);
 		}
+
 		return $instances;
 	}
 
@@ -424,7 +485,6 @@ class Repeater extends Repeater\Ancestor {
 		} else {
 			$source	= clone $this->getSourceAdapter();
 		}
-
 		$source->setLimit($this->limit);
 		$source->setPage($this->page);
  
@@ -649,6 +709,9 @@ class Repeater extends Repeater\Ancestor {
 					if ($source instanceof \Illuminate\Database\Query\Builder) {
 						$sourceAdapter = new Repeater\Source\Query($source, $options);		
 
+					} elseif ($source instanceof \Illuminate\Database\Eloquent\Model
+							  || $source instanceof \Illuminate\Database\Eloquent\Builder) {
+						$sourceAdapter = new Repeater\Source\Eloquent($source, $options);
 					# treat as array
 					} else {
 						$sourceAdapter = new Repeater\Source\Batch($source, $options);	
