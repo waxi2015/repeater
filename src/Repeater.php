@@ -380,7 +380,7 @@ class Repeater extends Repeater\Ancestor {
 
 	# $createFields: if it should create table fields
 	# or leave the raw data
-	public function getRows ($createFields = true) {
+	public function getRows ($createFields = true, $toArray = true) {
 		$rows = array();
 
 		$data = $this->getConvertedData();
@@ -389,7 +389,11 @@ class Repeater extends Repeater\Ancestor {
 			if ($createFields) {
 				$rows[$key] = $this->getFieldInstances($row);
 			} else {
-				$rows[$key] = to_array($row);
+				if ($toArray) {
+					$rows[$key] = to_array($row);
+				} else {
+					$rows[$key] = $row;
+				}
 			}
 		}
 
