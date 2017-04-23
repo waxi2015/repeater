@@ -49,8 +49,8 @@ class Eloquent extends Db {
 
 		# Laravel was missing reset order/limit/offset
 		$query->orders = null;
-		$query->offset = null;
-		$query->limit = null;
+		$query->offset(0);
+		$query->limit(99999);
 
 		return $query;
 	}
