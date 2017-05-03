@@ -48,6 +48,10 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 			$this->mode = $descriptor['mode'];
 		}
 
+		if (isset($descriptor['template'])) {
+			$this->template = $descriptor['template'];
+		}
+
 		parent::__construct($descriptor);
 	}
 

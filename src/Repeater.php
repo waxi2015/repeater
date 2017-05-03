@@ -322,10 +322,14 @@ class Repeater extends Repeater\Ancestor {
 	}
 
 	public function getPaginator ($a = true) {
-		if (!isset($this->paginator['type'])) {
+		if (is_string($this->paginator)) {
 			$this->paginator = [
 				'type' => 'pages'
 			];
+		}
+
+		if (!isset($this->paginator['type'])) {
+			$this->paginator['type'] = 'pages';
 		}
 		
 		$options = array(
