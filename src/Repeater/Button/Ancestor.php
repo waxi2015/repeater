@@ -130,8 +130,14 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 	}
 
 	public function getUrl () {
+		return $this->replaceVars($this->url);
+	}
+
+	protected function replaceVars ($str) {
+		$replaced = $str;
+
 		# replace data vars to values
-		preg_match_all('(%[a-zA-Z0-9]+)', $this->url, $matches);
+		preg_match_all('(%[a-zA-Z0-9]+)', $str, $matches);
 		
 		foreach ($matches[0] as $one) {
 			$var = str_replace('%','',$one);
@@ -149,10 +155,10 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 				$value = isset($this->data[$this->index][$var]) ? $this->data[$this->index][$var] : false;
 			}
 			
-			$this->url = str_replace($one, $value, $this->url);
+			$replaced = str_replace($one, $value, $str);
 		}
 
-		return $this->url;
+		return $replaced;
 	}
 
 	public function getMode () {
@@ -190,7 +196,18 @@ class Ancestor extends \Waxis\Repeater\Repeater\Ancestor {
 	}
 
 	public function getDomData () {
-		return $this->domData;
+		$domData = $this->domData;
+
+		if ($domData === null) {
+			return $domData;
+		}
+
+		$return = [];
+		foreach ($domData as $key => $value) {
+			$return[$key] = $this->replaceVars($value);
+		}
+
+		return $return;
 	}
 
 	public function getClassString () {

@@ -591,7 +591,8 @@ class Repeater extends Repeater\Ancestor {
 
 		if ($return === true && $this->getGuard($action) !== null) {
 			$guard = $this->getGuard($action);
-			$return = $guard($recordId);
+			$return = call_user_func($guard, $recordId);
+
 		}
 
 		return $return;
