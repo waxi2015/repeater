@@ -60,7 +60,7 @@ class Ancestor {
 			$value = $descriptorValue;
 		}
 
-		return $value;
+		return trim($value);
 	}
 
 	public function getFilterDescriptorValue ($filter) {
