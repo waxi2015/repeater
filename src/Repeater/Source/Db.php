@@ -61,6 +61,10 @@ class Db extends Ancestor {
 	public function filter () {
 		$where = '';
 		foreach ($this->filters as $filter) {
+			if (isset($filter['nofilter']) && $filter['nofilter']) {
+				continue;
+			}
+			
 			$wherepart = '';
 
 			if (!isset($filter['type'])) {
